@@ -1,0 +1,6 @@
+ mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 输出mybatis日志
+    map-underscore-to-camel-case: true
+  mapperLocations: classpath:mapper/*.xml
+  typeAliasesPackage: demo.bean

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="demo.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="demo.bean.User">
+        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="scope" jdbcType="VARCHAR" property="scope"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+  user_id, user_name, password, status, scope
+</sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  delete from user
+  where user_id = #{userId,jdbcType=INTEGER}
+</delete>
+    <insert id="insert" parameterType="demo.bean.User">
+  insert into user (user_id, user_name, password,
+  status, scope)
+  values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+  #{status,jdbcType=TINYINT}, #{scope,jdbcType=VARCHAR})
+</insert>
+    <insert id="insertSelective" parameterType="demo.bean.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="scope != null">
+                scope,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="scope != null">
+                #{scope,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="demo.bean.User">
+        update user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="scope != null">
+                scope = #{scope,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="demo.bean.User">
+  update user
+  set user_name = #{userName,jdbcType=VARCHAR},
+  password = #{password,jdbcType=VARCHAR},
+  status = #{status,jdbcType=TINYINT},
+  scope = #{scope,jdbcType=VARCHAR}
+  where user_id = #{userId,jdbcType=INTEGER}
+</update>
+
+    <select id="findByConditions" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <if test="conditionsPo.conditions!=null">
+            <![CDATA[  ${conditionsPo.conditions} ]]>
+        </if>
+        <choose>
+            <when test="conditionsPo.sort!=null">
+                <![CDATA[  ${conditionsPo.sort} ]]>
+            </when>
+            <otherwise>
+                ORDER BY
+                user_id ASC
+            </otherwise>
+        </choose>
+        <if test="conditionsPo.limit!=null">
+            <![CDATA[  ${conditionsPo.limit} ]]>
+        </if>
+    </select>
+
+    <select id="countByConditions" resultType="java.lang.Integer">
+        select
+        count(*)
+        from user
+        <if test="conditionsPo.conditions!=null">
+            <![CDATA[  ${conditionsPo.conditions} ]]>
+        </if>
+    </select>
+</mapper>
