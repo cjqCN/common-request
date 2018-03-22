@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class ConditionsVo {
+public class ConditionVo {
 
     /**
      * 一般为字段名

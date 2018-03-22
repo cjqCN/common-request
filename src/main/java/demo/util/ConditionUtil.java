@@ -4,7 +4,6 @@ package demo.util;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -42,7 +41,7 @@ public final class ConditionUtil {
      */
     public static ConditionsPo CommonRequestVo2ConditionsPo(CommonRequestVo commonRequestVo, Class poClass) throws Exception {
         ConditionsPo conditionsPo = new ConditionsPo();
-        List<ConditionsVo> conditions = commonRequestVo.getConditions();
+        List<ConditionVo> conditions = commonRequestVo.getConditions();
         List<String> sorts = commonRequestVo.getSorts();
         if (!CollectionUtils.isEmpty(conditions)) {
             conditionsPo.setConditions(getConditionSql(conditions, poClass));
@@ -59,7 +58,7 @@ public final class ConditionUtil {
      */
     public static ConditionsPo CommonRequestVo2ConditionsPoNoPage(CommonRequestVo commonRequestVo, Class poClass) throws Exception {
         ConditionsPo conditionsPo = new ConditionsPo();
-        List<ConditionsVo> conditions = commonRequestVo.getConditions();
+        List<ConditionVo> conditions = commonRequestVo.getConditions();
         List<String> sorts = commonRequestVo.getSorts();
         if (!CollectionUtils.isEmpty(conditions)) {
             conditionsPo.setConditions(getConditionSql(conditions, poClass));
@@ -78,7 +77,7 @@ public final class ConditionUtil {
      */
     public static ConditionsPo CommonRequestVo2ConditionsPoByCustom(CommonRequestVo commonRequestVo, Class poClass, String conditionsSql) throws Exception {
         ConditionsPo conditionsPo = new ConditionsPo();
-        List<ConditionsVo> conditions = commonRequestVo.getConditions();
+        List<ConditionVo> conditions = commonRequestVo.getConditions();
         List<String> sorts = commonRequestVo.getSorts();
         if (!CollectionUtils.isEmpty(conditions)) {
             conditionsPo.setConditions(conditionsSql);
@@ -94,14 +93,14 @@ public final class ConditionUtil {
     /**
      * 判断ConditionsVo 是否符合规范
      *
-     * @param conditionsVo
+     * @param conditionVo
      * @return
      * @throws Exception
      */
-    public static boolean assertConditionsVo(ConditionsVo conditionsVo) throws Exception {
-        String conditionValue = conditionsVo.getConditionValue().trim();
-        String conditionName = conditionsVo.getConditionName();
-        String comparisonSymbol = conditionsVo.getComparisonSymbol();
+    public static boolean assertConditionsVo(ConditionVo conditionVo) throws Exception {
+        String conditionValue = conditionVo.getConditionValue().trim();
+        String conditionName = conditionVo.getConditionName();
+        String comparisonSymbol = conditionVo.getComparisonSymbol();
         if (StringUtils.isEmpty(conditionName)
                 || StringUtils.isEmpty(comparisonSymbol)
                 || StringUtils.isEmpty(conditionValue)) {
@@ -114,7 +113,7 @@ public final class ConditionUtil {
     }
 
 
-    private static String getLimitSql(String pageIndexStr, String pageSizeStr) throws Exception {
+    private static String getLimitSql(Integer pageIndexStr, Integer pageSizeStr) throws Exception {
         int pageIndex;
         int pageSize;
         try {
@@ -138,12 +137,12 @@ public final class ConditionUtil {
     }
 
 
-    private static String getConditionSql(List<ConditionsVo> conditions, Class poClass) throws Exception {
+    private static String getConditionSql(List<ConditionVo> conditions, Class poClass) throws Exception {
         if (CollectionUtils.isEmpty(conditions)) {
             return null;
         }
         StringBuffer conditionSql = new StringBuffer(WHERE);
-        for (ConditionsVo condition : conditions) {
+        for (ConditionVo condition : conditions) {
             String conditionName = condition.getConditionName().trim();
             String comparisonSymbol = condition.getComparisonSymbol().trim();
             String conditionValue = condition.getConditionValue().trim();

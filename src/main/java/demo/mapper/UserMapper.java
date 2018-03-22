@@ -4,6 +4,7 @@ package demo.mapper;
 import demo.bean.User;
 import demo.util.ConditionsPo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,7 +22,19 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    int countByConditions(ConditionsPo conditionsPo);
+    /**
+     * 根据查询条件查数量
+     *
+     * @param conditionsPo
+     * @return
+     */
+    int countByConditions(@Param("conditionsPo") ConditionsPo conditionsPo);
 
-    List<User> findByConditions(ConditionsPo conditionsPo);
+    /**
+     * 根据查询条件查数据
+     *
+     * @param conditionsPo
+     * @return
+     */
+    List<User> findByConditions(@Param("conditionsPo") ConditionsPo conditionsPo);
 }
